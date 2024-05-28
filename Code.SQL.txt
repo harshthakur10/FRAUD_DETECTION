@@ -1,0 +1,47 @@
+-- To use the Database
+use project;
+	
+-- Checking All tables    
+select * from transaction;
+select * from merchant;
+select * from merchant_category;
+select * from credit_card;
+select * from card_holder;
+
+
+-- ** Basic Code ** --
+
+select m.name AS mname, m.id_merchant_category AS category
+from merchant m RIGHT JOIN merchant_category mc 
+ON m.id_merchant_category = mc.id order by category desc;
+
+--------------------
+
+select id, id_merchant, card , avg(amount) as average from transaction 
+group by  id, id_merchant, card having average<=5;
+
+------------------
+
+select id, id_merchant, card , avg(amount) as average_amount from transaction group by  id, id_merchant, card 
+order by average_amount DESC ;
+
+
+----------------
+
+select f.*, m.name , m.id_merchant_category 
+from project.transaction as f
+join project.merchant as m 
+on f.id_merchant = m.id order by id_merchant;
+
+
+-----------------
+
+
+select f.*, m.name , m.id_merchant_category ,
+ sum(f.amount) as total_amount 
+from project.transaction as f
+join project.merchant as m 
+on f.id_merchant = m.id  
+group by  f.id,f.date,f.amount,f.card,f.id_merchant, m.name , m.id_merchant_category
+order by total_amount desc
+limit 5;
